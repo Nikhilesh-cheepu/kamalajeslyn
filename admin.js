@@ -32,15 +32,23 @@ async function api(path, options = {}) {
   return data;
 }
 
+const ADMIN_UNLOCK_KEY = "kamala_admin_unlocked";
+
 async function checkSession() {
+  showLogin();
   const gen = ++sessionCheckGen;
   try {
     const { authenticated } = await api("/api/auth/session");
     if (gen !== sessionCheckGen) return;
-    if (authenticated) showAdmin();
-    else showLogin();
+    if (authenticated === true && sessionStorage.getItem(ADMIN_UNLOCK_KEY) === "1") {
+      showAdmin();
+    } else {
+      sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
+      showLogin();
+    }
   } catch {
     if (gen !== sessionCheckGen) return;
+    sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
     showLogin();
   }
 }
@@ -112,6 +120,7 @@ loginForm.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
     });
+    sessionStorage.setItem(ADMIN_UNLOCK_KEY, "1");
     showAdmin();
   } catch (err) {
     loginError.textContent = err.message;
@@ -123,6 +132,7 @@ loginForm.addEventListener("submit", async (e) => {
 
 document.getElementById("logout-btn")?.addEventListener("click", async () => {
   sessionCheckGen++;
+  sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
   await api("/api/auth/logout", { method: "POST" });
   showLogin();
 });
