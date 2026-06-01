@@ -111,8 +111,12 @@
   </footer>
 
   <div class="lightbox" id="lightbox" hidden>
-    <button class="lightbox-close" aria-label="Close">×</button>
-    <img src="" alt="" id="lightbox-img" />
+    <button type="button" class="lightbox-close" aria-label="Close">×</button>
+    <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous">‹</button>
+    <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next">›</button>
+    <div class="lightbox-stage">
+      <img src="" alt="" id="lightbox-img" />
+    </div>
   </div>
 
   <script src="script.js"></script>

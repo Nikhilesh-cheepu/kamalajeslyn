@@ -35,10 +35,33 @@ nav?.querySelectorAll("a").forEach((link) => {
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 const closeBtn = lightbox?.querySelector(".lightbox-close");
+const lightboxPrev = document.getElementById("lightbox-prev");
+const lightboxNext = document.getElementById("lightbox-next");
 
-function openLightbox(src, alt) {
-  lightboxImg.src = src;
-  lightboxImg.alt = alt;
+let lightboxSlides = [];
+let lightboxIndex = 0;
+let touchStartX = 0;
+let touchStartY = 0;
+
+function showLightboxSlide(index) {
+  if (!lightboxSlides.length) return;
+  lightboxIndex = (index + lightboxSlides.length) % lightboxSlides.length;
+  const slide = lightboxSlides[lightboxIndex];
+  lightboxImg.src = slide.src;
+  lightboxImg.alt = slide.alt;
+  if (slide.width) lightboxImg.width = slide.width;
+  else lightboxImg.removeAttribute("width");
+  if (slide.height) lightboxImg.height = slide.height;
+  else lightboxImg.removeAttribute("height");
+
+  const hideNav = lightboxSlides.length <= 1;
+  lightboxPrev.hidden = hideNav;
+  lightboxNext.hidden = hideNav;
+}
+
+function openLightbox(index) {
+  if (!lightboxSlides.length) return;
+  showLightboxSlide(index);
   lightbox.hidden = false;
   document.body.style.overflow = "hidden";
 }
@@ -49,13 +72,61 @@ function closeLightbox() {
   document.body.style.overflow = "";
 }
 
-closeBtn?.addEventListener("click", closeLightbox);
+function goLightbox(delta) {
+  if (lightbox.hidden || lightboxSlides.length <= 1) return;
+  showLightboxSlide(lightboxIndex + delta);
+}
+
+closeBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  closeLightbox();
+});
+lightboxPrev?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  goLightbox(-1);
+});
+lightboxNext?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  goLightbox(1);
+});
 lightbox?.addEventListener("click", (e) => {
   if (e.target === lightbox) closeLightbox();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
+  if (lightbox.hidden) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    goLightbox(-1);
+  }
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    goLightbox(1);
+  }
 });
+
+lightbox?.addEventListener(
+  "touchstart",
+  (e) => {
+    if (lightbox.hidden || lightboxSlides.length <= 1) return;
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  },
+  { passive: true }
+);
+
+lightbox?.addEventListener(
+  "touchend",
+  (e) => {
+    if (lightbox.hidden || lightboxSlides.length <= 1) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) goLightbox(1);
+    else goLightbox(-1);
+  },
+  { passive: true }
+);
 
 function escapeHtml(str) {
   const d = document.createElement("div");
@@ -93,6 +164,7 @@ function renderGalleryItem(item, index, staggerIndex) {
         class="gallery-frame"
         role="button"
         tabindex="0"
+        data-lightbox-index="${index}"
         aria-label="${escapeHtml(alt)}"
       >
         <img
@@ -124,14 +196,31 @@ function renderRatioSection({ ratioKey, ratioW, ratioH, items }, startIndex) {
   `;
 }
 
+function buildLightboxSlides(groups) {
+  lightboxSlides = [];
+  for (const { items } of groups) {
+    for (const item of items) {
+      lightboxSlides.push({
+        src: item.url || item.src,
+        alt: `Graphic design work ${lightboxSlides.length + 1} by Repudi Kamala Jeslyn`,
+        width: item.width,
+        height: item.height,
+      });
+    }
+  }
+}
+
 function bindLightbox(root) {
   root.querySelectorAll(".gallery-frame").forEach((frame) => {
-    const img = frame.querySelector("img");
-    frame.addEventListener("click", () => openLightbox(img.src, img.alt));
+    frame.addEventListener("click", () => {
+      const idx = Number(frame.dataset.lightboxIndex);
+      if (!Number.isNaN(idx)) openLightbox(idx);
+    });
     frame.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        openLightbox(img.src, img.alt);
+        const idx = Number(frame.dataset.lightboxIndex);
+        if (!Number.isNaN(idx)) openLightbox(idx);
       }
     });
   });
@@ -151,11 +240,10 @@ async function loadGallery() {
     const items = data.items || [];
     const order = data.order || { "4x5": [], "9x16": [] };
 
-    const groups = sortItemsIntoFixedRatios(items, order);
+    const groups = sortItemsIntoFixedRatios(items, order).filter((g) => g.items.length > 0);
     let index = 0;
 
     gallery.innerHTML = groups
-      .filter((g) => g.items.length > 0)
       .map((group) => {
         const block = renderRatioSection(group, index);
         index += group.items.length;
@@ -164,6 +252,8 @@ async function loadGallery() {
       .join("");
 
     if (index === 0) return;
+
+    buildLightboxSlides(groups);
 
     gallery.classList.add("has-items");
     bindLightbox(gallery);
