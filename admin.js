@@ -1,7 +1,13 @@
 const FIXED_RATIOS = ["4x5", "9x16"];
 
 let manifest = { order: { "4x5": [], "9x16": [] }, items: [] };
-let dragged = null;
+
+const LONG_PRESS_MS = 420;
+const DRAG_ACTIVATE_PX = 8;
+const LONG_PRESS_CANCEL_PX = 12;
+
+let reorderDrag = null;
+let reorderDocListeners = null;
 let sessionCheckGen = 0;
 let uploadInProgress = false;
 let selectMode = false;
@@ -77,6 +83,7 @@ function updateSelectionUi() {
 }
 
 function exitSelectMode() {
+  endReorderDrag();
   selectMode = false;
   selectedIds.clear();
   adminApp.classList.remove("is-select-mode");
@@ -87,6 +94,7 @@ function exitSelectMode() {
 }
 
 function enterSelectMode() {
+  endReorderDrag();
   selectMode = true;
   selectedIds.clear();
   adminApp.classList.add("is-select-mode");
@@ -257,7 +265,6 @@ function renderGrids() {
         return `
           <div
             class="admin-item${selected ? " is-selected" : ""}"
-            draggable="${selectMode ? "false" : "true"}"
             data-id="${item.id}"
             data-ratio="${item.ratioKey}"
             style="--ar-w: ${item.ratioW}; --ar-h: ${item.ratioH}"
@@ -281,6 +288,143 @@ function renderGrids() {
   }
 }
 
+function clearReorderDocListeners() {
+  if (!reorderDocListeners) return;
+  const { move, up } = reorderDocListeners;
+  document.removeEventListener("pointermove", move);
+  document.removeEventListener("pointerup", up);
+  document.removeEventListener("pointercancel", up);
+  reorderDocListeners = null;
+}
+
+function moveReorderDrag(clientX, clientY) {
+  if (!reorderDrag) return;
+  const { item, grid } = reorderDrag;
+  const under = document.elementFromPoint(clientX, clientY);
+  const target = under?.closest?.(".admin-item");
+  if (!target || target === item || target.parentElement !== grid) return;
+
+  const rect = target.getBoundingClientRect();
+  const after = clientX > rect.left + rect.width / 2;
+  if (after) target.after(item);
+  else target.before(item);
+}
+
+function endReorderDrag() {
+  if (!reorderDrag) return;
+  const { item, pointerId } = reorderDrag;
+  item.classList.remove("is-dragging", "is-press-pending");
+  if (item.hasPointerCapture?.(pointerId)) {
+    item.releasePointerCapture(pointerId);
+  }
+  reorderDrag = null;
+  document.body.classList.remove("is-reorder-dragging");
+  clearReorderDocListeners();
+  saveOrder();
+}
+
+function beginReorderDrag(item, grid, ratioKey, pointerId) {
+  reorderDrag = { item, grid, ratioKey, pointerId };
+  item.classList.remove("is-press-pending");
+  item.classList.add("is-dragging");
+  document.body.classList.add("is-reorder-dragging");
+  item.setPointerCapture?.(pointerId);
+  navigator.vibrate?.(12);
+
+  const onMove = (e) => {
+    if (!reorderDrag || e.pointerId !== reorderDrag.pointerId) return;
+    e.preventDefault();
+    moveReorderDrag(e.clientX, e.clientY);
+  };
+
+  const onUp = (e) => {
+    if (!reorderDrag || e.pointerId !== reorderDrag.pointerId) return;
+    e.preventDefault();
+    endReorderDrag();
+  };
+
+  reorderDocListeners = { move: onMove, up: onUp };
+  document.addEventListener("pointermove", onMove, { passive: false });
+  document.addEventListener("pointerup", onUp, { passive: false });
+  document.addEventListener("pointercancel", onUp, { passive: false });
+}
+
+function bindReorderPointer(item, grid, ratioKey) {
+  item.addEventListener("contextmenu", (e) => {
+    if (reorderDrag) e.preventDefault();
+  });
+
+  item.addEventListener("pointerdown", (e) => {
+    if (selectMode || e.button !== 0) return;
+    if (e.target.closest(".delete-btn") || e.target.closest(".select-check")) return;
+
+    const useLongPress = e.pointerType === "touch";
+    let activated = false;
+    let pressTimer = null;
+    const startX = e.clientX;
+    const startY = e.clientY;
+
+    const activate = () => {
+      if (activated || selectMode) return;
+      activated = true;
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+      item.classList.remove("is-press-pending");
+      beginReorderDrag(item, grid, ratioKey, e.pointerId);
+    };
+
+    const cancelPending = () => {
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+      item.classList.remove("is-press-pending");
+    };
+
+    if (useLongPress) {
+      item.classList.add("is-press-pending");
+      pressTimer = setTimeout(activate, LONG_PRESS_MS);
+    }
+
+    const onPointerMove = (ev) => {
+      if (ev.pointerId !== e.pointerId) return;
+
+      if (activated) {
+        ev.preventDefault();
+        moveReorderDrag(ev.clientX, ev.clientY);
+        return;
+      }
+
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      const dist = Math.hypot(dx, dy);
+
+      if (useLongPress) {
+        if (dist > LONG_PRESS_CANCEL_PX) cancelPending();
+      } else if (dist > DRAG_ACTIVATE_PX) {
+        activate();
+        ev.preventDefault();
+        moveReorderDrag(ev.clientX, ev.clientY);
+      }
+    };
+
+    const onPointerUp = (ev) => {
+      if (ev.pointerId !== e.pointerId) return;
+      cancelPending();
+      item.removeEventListener("pointermove", onPointerMove);
+      item.removeEventListener("pointerup", onPointerUp);
+      item.removeEventListener("pointercancel", onPointerUp);
+      if (activated && reorderDrag) endReorderDrag();
+    };
+
+    item.addEventListener("pointermove", onPointerMove, { passive: false });
+    item.addEventListener("pointerup", onPointerUp);
+    item.addEventListener("pointercancel", onPointerUp);
+  });
+}
+
 function bindGridEvents(grid, ratioKey) {
   grid.querySelectorAll(".admin-item").forEach((item) => {
     const id = item.dataset.id;
@@ -301,24 +445,7 @@ function bindGridEvents(grid, ratioKey) {
       return;
     }
 
-    item.addEventListener("dragstart", (e) => {
-      dragged = item;
-      item.classList.add("is-dragging");
-      e.dataTransfer.effectAllowed = "move";
-    });
-    item.addEventListener("dragend", () => {
-      item.classList.remove("is-dragging");
-      dragged = null;
-      saveOrder();
-    });
-    item.addEventListener("dragover", (e) => {
-      if (!dragged || dragged.dataset.ratio !== ratioKey) return;
-      e.preventDefault();
-      const rect = item.getBoundingClientRect();
-      const after = e.clientX > rect.left + rect.width / 2;
-      if (after) item.after(dragged);
-      else item.before(dragged);
-    });
+    bindReorderPointer(item, grid, ratioKey);
   });
 
   if (!selectMode) {

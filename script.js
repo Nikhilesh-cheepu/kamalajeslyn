@@ -1,7 +1,7 @@
 /**
  * Repudi Kamala Jeslyn — Portfolio
  */
-const CONTACT_EMAIL = "kamalasamuel001@gmail.com";
+const CONTACT_EMAIL = "kamalajeslyn000@gmail.com";
 const API_FLYERS = "/api/flyers";
 
 const FIXED_RATIOS = [
@@ -112,6 +112,10 @@ function renderRatioSection({ ratioKey, ratioW, ratioH, items }, startIndex) {
     .map((item, i) => renderGalleryItem(item, startIndex + i, i))
     .join("");
 
+  const ratioLabel = ratioKey === "4x5" ? "4∶5" : "9∶16";
+  const ratioNote =
+    ratioKey === "4x5" ? "Posters & portrait flyers" : "Vertical stories & reels";
+
   return `
     <div
       class="gallery-ratio-block"
@@ -119,6 +123,10 @@ function renderRatioSection({ ratioKey, ratioW, ratioH, items }, startIndex) {
       data-ratio-w="${ratioW}"
       data-ratio-h="${ratioH}"
     >
+      <header class="gallery-ratio-head">
+        <span class="gallery-ratio-label">${ratioLabel}</span>
+        <span class="gallery-ratio-note">${ratioNote}</span>
+      </header>
       <div class="gallery-grid">${cards}</div>
     </div>
   `;
@@ -167,9 +175,29 @@ async function loadGallery() {
 
     gallery.classList.add("has-items");
     bindLightbox(gallery);
+
+    gallery.querySelectorAll(".gallery-ratio-block").forEach((block) => {
+      block.classList.add("reveal");
+      revealObserver.observe(block);
+    });
   } catch {
     /* silent */
   }
 }
+
+/* Scroll reveal */
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      }
+    }
+  },
+  { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+);
+
+document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
 loadGallery();

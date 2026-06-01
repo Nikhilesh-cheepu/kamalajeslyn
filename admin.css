@@ -257,6 +257,18 @@ body {
   display: none;
 }
 
+.reorder-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  line-height: 1.45;
+}
+
+.reorder-hint strong {
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
 .admin-gallery {
   display: flex;
   flex-direction: column;
@@ -286,10 +298,38 @@ body {
   border: 1px solid var(--border);
   cursor: grab;
   background: var(--bg-card);
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-item.is-press-pending {
+  transform: scale(0.96);
+  border-color: rgba(78, 205, 196, 0.55);
+  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.25);
 }
 
 .admin-item.is-dragging {
-  opacity: 0.5;
+  opacity: 0.92;
+  z-index: 50;
+  cursor: grabbing;
+  transform: scale(1.04);
+  border-color: var(--accent-2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  touch-action: none;
+}
+
+body.is-reorder-dragging {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+body.is-reorder-dragging .admin-grid {
+  touch-action: none;
 }
 
 .admin-item img {
@@ -297,6 +337,9 @@ body {
   aspect-ratio: var(--ar-w, 4) / var(--ar-h, 5);
   object-fit: cover;
   display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .admin-item[data-ratio="9x16"] img {
