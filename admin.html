@@ -42,6 +42,19 @@
       <p id="upload-status" class="status-msg"></p>
     </section>
 
+    <section class="selection-bar" id="selection-bar">
+      <button type="button" id="select-mode-btn" class="btn btn-ghost">Select</button>
+      <div id="selection-actions" class="selection-actions" hidden>
+        <button type="button" id="select-all-btn" class="btn btn-ghost">Select all</button>
+        <button type="button" id="clear-selection-btn" class="btn btn-ghost">Clear</button>
+        <button type="button" id="delete-selected-btn" class="btn btn-danger" disabled>
+          Delete selected
+        </button>
+        <button type="button" id="cancel-select-btn" class="btn btn-ghost">Done</button>
+      </div>
+      <span id="selection-count" class="selection-count" hidden>0 selected</span>
+    </section>
+
     <section class="admin-gallery">
       <div class="ratio-panel" data-ratio="4x5">
         <h2>4∶5</h2>

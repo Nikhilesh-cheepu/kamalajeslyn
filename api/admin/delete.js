@@ -4,6 +4,15 @@ import {
   saveManifest,
   deleteBlobUrl,
 } from "../../lib/manifest.mjs";
+import { parseJsonBody } from "../../lib/parse-json-body.mjs";
+
+function collectIds(body, query) {
+  if (Array.isArray(body?.ids) && body.ids.length) {
+    return [...new Set(body.ids.filter(Boolean))];
+  }
+  const single = body?.id || query?.id;
+  return single ? [single] : [];
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST" && req.method !== "DELETE") {
@@ -12,39 +21,36 @@ export default async function handler(req, res) {
   }
   if (!requireAuth(req, res)) return;
 
-  let body = req.body;
-  if (typeof body === "string") {
-    try {
-      body = JSON.parse(body);
-    } catch {
-      body = {};
-    }
-  }
+  const body = parseJsonBody(req);
+  const ids = collectIds(body, req.query);
 
-  const id = body?.id || req.query?.id;
-  if (!id) {
-    res.status(400).json({ error: "Missing id" });
+  if (!ids.length) {
+    res.status(400).json({ error: "Missing id or ids" });
     return;
   }
 
   try {
     const manifest = await loadManifest();
-    const item = manifest.items.find((i) => i.id === id);
-    if (!item) {
-      res.status(404).json({ error: "Not found" });
+    const idSet = new Set(ids);
+    const toDelete = manifest.items.filter((i) => idSet.has(i.id));
+
+    if (!toDelete.length) {
+      res.status(404).json({ error: "No matching flyers found" });
       return;
     }
 
-    await deleteBlobUrl(item.url);
-    manifest.items = manifest.items.filter((i) => i.id !== id);
+    await Promise.all(toDelete.map((item) => deleteBlobUrl(item.url)));
+
+    const deletedIds = new Set(toDelete.map((i) => i.id));
+    manifest.items = manifest.items.filter((i) => !deletedIds.has(i.id));
     for (const key of ["4x5", "9x16"]) {
-      manifest.order[key] = manifest.order[key].filter((x) => x !== id);
+      manifest.order[key] = manifest.order[key].filter((x) => !deletedIds.has(x));
     }
 
     await saveManifest(manifest);
-    res.status(200).json({ ok: true });
+    res.status(200).json({ ok: true, deleted: toDelete.length, ids: [...deletedIds] });
   } catch (err) {
-    console.error("DELETE flyer", err);
+    console.error("DELETE flyer(s)", err);
     res.status(500).json({ error: "Delete failed" });
   }
 }

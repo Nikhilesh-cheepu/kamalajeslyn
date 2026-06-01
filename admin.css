@@ -170,6 +170,76 @@ body {
   min-height: 1.2em;
 }
 
+.selection-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.selection-count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--accent-2);
+}
+
+.btn-danger {
+  background: rgba(255, 107, 157, 0.2);
+  color: #ff8a8a;
+  border: 1px solid rgba(255, 107, 157, 0.45);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(255, 107, 157, 0.35);
+}
+
+.btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-app.is-select-mode .admin-item {
+  cursor: pointer;
+}
+
+.admin-item.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.35);
+}
+
+.admin-item .select-check {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+}
+
+.admin-app.is-select-mode .admin-item .select-check {
+  opacity: 1;
+}
+
+.admin-app.is-select-mode .admin-item .delete-btn {
+  display: none;
+}
+
 .admin-gallery {
   display: flex;
   flex-direction: column;

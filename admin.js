@@ -4,6 +4,8 @@ let manifest = { order: { "4x5": [], "9x16": [] }, items: [] };
 let dragged = null;
 let sessionCheckGen = 0;
 let uploadInProgress = false;
+let selectMode = false;
+const selectedIds = new Set();
 
 const loginScreen = document.getElementById("login-screen");
 const adminApp = document.getElementById("admin-app");
@@ -12,6 +14,13 @@ const loginError = document.getElementById("login-error");
 const uploadStatus = document.getElementById("upload-status");
 const fileInput = document.getElementById("file-input");
 const uploadDrop = document.getElementById("upload-drop");
+const selectModeBtn = document.getElementById("select-mode-btn");
+const selectionActions = document.getElementById("selection-actions");
+const selectAllBtn = document.getElementById("select-all-btn");
+const clearSelectionBtn = document.getElementById("clear-selection-btn");
+const deleteSelectedBtn = document.getElementById("delete-selected-btn");
+const cancelSelectBtn = document.getElementById("cancel-select-btn");
+const selectionCount = document.getElementById("selection-count");
 
 async function api(path, options = {}) {
   const res = await fetch(path, {
@@ -39,12 +48,55 @@ async function checkSession() {
 function showLogin() {
   loginScreen.hidden = false;
   adminApp.hidden = true;
+  exitSelectMode();
 }
 
 function showAdmin() {
   loginScreen.hidden = true;
   adminApp.hidden = false;
   loadManifest();
+}
+
+function updateSelectionUi() {
+  const n = selectedIds.size;
+  selectionCount.textContent = `${n} selected`;
+  selectionCount.hidden = !selectMode;
+  deleteSelectedBtn.disabled = n === 0;
+  deleteSelectedBtn.textContent =
+    n === 0 ? "Delete selected" : `Delete selected (${n})`;
+}
+
+function exitSelectMode() {
+  selectMode = false;
+  selectedIds.clear();
+  adminApp.classList.remove("is-select-mode");
+  selectModeBtn.hidden = false;
+  selectionActions.hidden = true;
+  selectionCount.hidden = true;
+  updateSelectionUi();
+}
+
+function enterSelectMode() {
+  selectMode = true;
+  selectedIds.clear();
+  adminApp.classList.add("is-select-mode");
+  selectModeBtn.hidden = true;
+  selectionActions.hidden = false;
+  renderGrids();
+  updateSelectionUi();
+}
+
+function toggleSelected(id) {
+  if (selectedIds.has(id)) selectedIds.delete(id);
+  else selectedIds.add(id);
+  const on = selectedIds.has(id);
+  document.querySelectorAll(`.admin-item[data-id="${id}"]`).forEach((el) => {
+    el.classList.toggle("is-selected", on);
+  });
+  document.querySelectorAll(`.select-check[data-id="${id}"]`).forEach((el) => {
+    el.checked = on;
+  });
+  updateSelectionUi();
 }
 
 loginForm.addEventListener("submit", async (e) => {
@@ -75,6 +127,67 @@ document.getElementById("logout-btn")?.addEventListener("click", async () => {
   showLogin();
 });
 
+selectModeBtn?.addEventListener("click", () => enterSelectMode());
+cancelSelectBtn?.addEventListener("click", () => {
+  exitSelectMode();
+  renderGrids();
+});
+
+selectAllBtn?.addEventListener("click", () => {
+  for (const item of manifest.items) selectedIds.add(item.id);
+  renderGrids();
+  updateSelectionUi();
+});
+
+clearSelectionBtn?.addEventListener("click", () => {
+  selectedIds.clear();
+  renderGrids();
+  updateSelectionUi();
+});
+
+deleteSelectedBtn?.addEventListener("click", () => deleteSelected());
+
+async function deleteSelected() {
+  const ids = [...selectedIds];
+  if (!ids.length) return;
+
+  const label = ids.length === 1 ? "this flyer" : `${ids.length} flyers`;
+  if (!confirm(`Delete ${label}? This cannot be undone.`)) return;
+
+  try {
+    deleteSelectedBtn.disabled = true;
+    uploadStatus.textContent = `Deleting ${ids.length} image(s)…`;
+
+    const data = await api("/api/admin/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+
+    uploadStatus.textContent = `Deleted ${data.deleted ?? ids.length} image(s).`;
+    exitSelectMode();
+    await loadManifest();
+  } catch (err) {
+    uploadStatus.textContent = err.message;
+    updateSelectionUi();
+  }
+}
+
+async function deleteOne(id) {
+  if (!confirm("Delete this flyer?")) return;
+  try {
+    await api("/api/admin/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    uploadStatus.textContent = "Deleted.";
+    await loadManifest();
+  } catch (err) {
+    uploadStatus.textContent = err.message;
+  }
+}
+
 async function loadManifest() {
   manifest = await api("/api/admin/manifest");
   renderGrids();
@@ -91,15 +204,24 @@ function renderGrids() {
       .map((id) => {
         const item = byId[id];
         if (!item) return "";
+        const selected = selectedIds.has(item.id);
         return `
           <div
-            class="admin-item"
-            draggable="true"
+            class="admin-item${selected ? " is-selected" : ""}"
+            draggable="${selectMode ? "false" : "true"}"
             data-id="${item.id}"
             data-ratio="${item.ratioKey}"
             style="--ar-w: ${item.ratioW}; --ar-h: ${item.ratioH}"
           >
-            <img src="${item.url}" alt="" loading="lazy" />
+            <input
+              type="checkbox"
+              class="select-check"
+              data-id="${item.id}"
+              aria-label="Select flyer"
+              ${selected ? "checked" : ""}
+              ${selectMode ? "" : "hidden"}
+            />
+            <img src="${item.url}" alt="" loading="lazy" draggable="false" />
             <button type="button" class="delete-btn" data-id="${item.id}" aria-label="Delete">×</button>
           </div>
         `;
@@ -112,6 +234,24 @@ function renderGrids() {
 
 function bindGridEvents(grid, ratioKey) {
   grid.querySelectorAll(".admin-item").forEach((item) => {
+    const id = item.dataset.id;
+
+    if (selectMode) {
+      item.addEventListener("click", (e) => {
+        if (e.target.closest(".select-check")) return;
+        toggleSelected(id);
+      });
+      const check = item.querySelector(".select-check");
+      check?.addEventListener("change", (e) => {
+        e.stopPropagation();
+        if (check.checked) selectedIds.add(id);
+        else selectedIds.delete(id);
+        item.classList.toggle("is-selected", check.checked);
+        updateSelectionUi();
+      });
+      return;
+    }
+
     item.addEventListener("dragstart", (e) => {
       dragged = item;
       item.classList.add("is-dragging");
@@ -132,26 +272,18 @@ function bindGridEvents(grid, ratioKey) {
     });
   });
 
-  grid.querySelectorAll(".delete-btn").forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      if (!confirm("Delete this flyer?")) return;
-      try {
-        await api("/api/admin/delete", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: btn.dataset.id }),
-        });
-        uploadStatus.textContent = "Deleted.";
-        await loadManifest();
-      } catch (err) {
-        uploadStatus.textContent = err.message;
-      }
+  if (!selectMode) {
+    grid.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        await deleteOne(btn.dataset.id);
+      });
     });
-  });
+  }
 }
 
 async function saveOrder() {
+  if (selectMode) return;
   const order = { "4x5": [], "9x16": [] };
   for (const ratio of FIXED_RATIOS) {
     const grid = document.getElementById(`grid-${ratio.replace(":", "x")}`);
