@@ -1,0 +1,234 @@
+:root {
+  --bg: #0f0a14;
+  --bg-card: #1a1224;
+  --text: #f5f0fa;
+  --muted: #b8a8c8;
+  --accent: #ff6b9d;
+  --accent-2: #4ecdc4;
+  --border: rgba(255, 255, 255, 0.1);
+  --radius: 12px;
+  --font: "Outfit", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 320px;
+  padding: 2rem 1.5rem;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.login-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-2);
+  margin: 0 0 0.5rem;
+}
+
+.login-card h1 {
+  font-size: 1.35rem;
+  margin: 0 0 1.25rem;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.login-error {
+  color: #ff8a8a;
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0;
+}
+
+.admin-app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-header h1 {
+  flex: 1;
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.admin-back {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.btn {
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #ff6b9d, #a855f7);
+  color: #0f0a14;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.upload-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 2rem 1rem;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-drop.is-dragover {
+  border-color: var(--accent-2);
+  background: rgba(78, 205, 196, 0.08);
+}
+
+.upload-icon {
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.upload-hint {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.status-msg {
+  font-size: 0.85rem;
+  color: var(--accent-2);
+  margin: 0.65rem 0 0;
+  min-height: 1.2em;
+}
+
+.admin-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.ratio-panel h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-2);
+  margin: 0 0 0.65rem;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 0.5rem;
+  min-height: 60px;
+}
+
+.admin-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: grab;
+  background: var(--bg-card);
+}
+
+.admin-item.is-dragging {
+  opacity: 0.5;
+}
+
+.admin-item img {
+  width: 100%;
+  aspect-ratio: var(--ar-w, 4) / var(--ar-h, 5);
+  object-fit: cover;
+  display: block;
+}
+
+.admin-item[data-ratio="9x16"] img {
+  aspect-ratio: 9 / 16;
+}
+
+.admin-item .delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.admin-item:hover .delete-btn,
+.admin-item .delete-btn:focus {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .admin-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .admin-item .delete-btn {
+    opacity: 1;
+  }
+}

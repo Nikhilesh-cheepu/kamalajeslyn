@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin · Portfolio</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <form id="login-form" class="login-card">
+      <p class="login-label">Portfolio admin</p>
+      <h1>Enter password</h1>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+      />
+      <button type="submit" class="btn btn-primary">Log in</button>
+      <p id="login-error" class="login-error" hidden></p>
+    </form>
+  </div>
+
+  <div id="admin-app" class="admin-app" hidden>
+    <header class="admin-header">
+      <a href="/" class="admin-back">← Site</a>
+      <h1>Manage flyers</h1>
+      <button type="button" id="logout-btn" class="btn btn-ghost">Log out</button>
+    </header>
+
+    <section class="upload-zone">
+      <label class="upload-drop" id="upload-drop">
+        <input type="file" id="file-input" accept="image/*" multiple hidden />
+        <span class="upload-icon">+</span>
+        <span>Drop images or tap to upload</span>
+        <span class="upload-hint">Auto-sorted into 4∶5 or 9∶16</span>
+      </label>
+      <p id="upload-status" class="status-msg"></p>
+    </section>
+
+    <section class="admin-gallery">
+      <div class="ratio-panel" data-ratio="4x5">
+        <h2>4∶5</h2>
+        <div class="admin-grid" id="grid-4x5"></div>
+      </div>
+      <div class="ratio-panel" data-ratio="9x16">
+        <h2>9∶16</h2>
+        <div class="admin-grid" id="grid-9x16"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="admin.js" type="module"></script>
+</body>
+</html>

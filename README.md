@@ -30,7 +30,38 @@ Then **Redeploy** the latest commit. Your site URL will be something like `https
 
 If you see **404 NOT_FOUND**, the Output Directory is almost always set to `public` by mistake — clear it and redeploy.
 
-## Add your flyers
+## Environment variables (Vercel)
+
+In Vercel → Settings → Environment Variables, add:
+
+| Variable | Purpose |
+|----------|---------|
+| `BLOB_READ_WRITE_TOKEN` | Upload & store flyers |
+| `BLOB_STORE_ID` | From Vercel Blob dashboard |
+| `BLOB_WEBHOOK_PUBLIC_KEY` | Optional webhook key |
+| `ADMIN_PASSWORD` | Admin login (`9550` or your own) |
+
+Redeploy after adding variables.
+
+## Admin panel
+
+Open **`/admin`** on your live site (e.g. `https://your-site.vercel.app/admin`).
+
+- Log in with your password only (no username)
+- **Upload** — images auto-sort into **4∶5** or **9∶16**
+- **Drag** to reorder within each ratio
+- **Delete** with × on each thumbnail
+
+The public site loads flyers from Vercel Blob via `/api/flyers`.
+
+### Migrate existing local flyers to Blob
+
+```bash
+export BLOB_READ_WRITE_TOKEN=your_token
+npm run migrate-blob
+```
+
+## Add your flyers (legacy local)
 
 1. Copy **all** images into **`public/flyers/`** (unordered is fine).
 2. Run:
