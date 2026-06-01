@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Repudi Kamala Jeslyn — Student, graphic designer, horticulture dreamer. Flyers, farms, and visual stories." />
+  <title>Repudi Kamala Jeslyn | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <header class="site-header">
+    <a href="#" class="logo">KJ<span class="logo-dot">.</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#story">Story</a>
+      <a href="#contact" class="nav-cta">Contact</a>
+      <div class="nav-edit" id="nav-edit" hidden>
+        <button type="button" class="nav-edit-btn" id="toggle-reorder" aria-pressed="false">Reorder</button>
+        <button type="button" class="nav-edit-btn nav-edit-btn--save" id="save-order" hidden>Save</button>
+      </div>
+    </nav>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <p class="hero-badge">Student · Graphic designer</p>
+        <h1 class="hero-title">
+          <span class="line">Repudi</span>
+          <span class="line accent">Kamala Jeslyn</span>
+        </h1>
+        <p class="hero-lead">I grow ideas in two places — the field and the frame.</p>
+        <a href="#work" class="btn btn-primary">See my work</a>
+      </div>
+    </section>
+
+    <section class="work" id="work">
+      <div class="section-header section-header--work">
+        <span class="section-label">Work</span>
+        <h2>Flyers &amp; visuals</h2>
+      </div>
+      <div class="gallery-stacks" id="gallery" aria-live="polite"></div>
+    </section>
+
+    <section class="my-story" id="story">
+      <header class="story-header">
+        <span class="section-label">My story</span>
+        <h2>From soil to screen.</h2>
+        <p class="story-lead">
+          A short journey — why I study horticulture, why I design, and what I’m building toward.
+        </p>
+      </header>
+
+      <div class="story-chapters">
+        <article class="story-chapter story-chapter--green">
+          <span class="chapter-num" aria-hidden="true">01</span>
+          <div class="chapter-body">
+            <h3>Why horticulture</h3>
+            <p>
+              I joined <strong>Dr. YSR Horticulture University</strong> with a dream already planted: a beautiful farm — livestock on open land, flowers in colour, landscaping shaped with care. Not just a course. A life I could see.
+            </p>
+          </div>
+        </article>
+
+        <article class="story-chapter story-chapter--teal">
+          <span class="chapter-num" aria-hidden="true">02</span>
+          <div class="chapter-body">
+            <h3>Still studying, still growing</h3>
+            <p>
+              I’m <strong>still a student</strong> — learning soil, plants, and landscape while that farm picture gets clearer every semester. The passion hasn’t changed; the roots are going deeper.
+            </p>
+          </div>
+        </article>
+
+        <article class="story-chapter story-chapter--pink" id="experience">
+          <span class="chapter-num" aria-hidden="true">03</span>
+          <div class="chapter-body">
+            <h3>Why graphic design</h3>
+            <p>
+              Design became how I <strong>show the dream before it’s real</strong> — flyers, colour, type, layout. The same eye that plans a field plans a poster. I create visuals at <strong>Bassik Hospitality Services Pvt Ltd</strong> (graphic designer, leading role · from April 2025) while I keep studying — two paths, one creative heart.
+            </p>
+          </div>
+        </article>
+
+        <article class="story-chapter story-chapter--dream" id="dream">
+          <span class="chapter-num" aria-hidden="true">04</span>
+          <div class="chapter-body">
+            <h3>The farm I’m designing in my mind</h3>
+            <p class="chapter-note">
+              My dream project — livestock, flowers, landscape — in one 16∶9 vision.
+            </p>
+            <div
+              class="dream-frame gallery-frame"
+              id="dream-frame"
+              role="button"
+              tabindex="0"
+              aria-label="View dream farm flyer"
+            >
+              <img
+                id="dream-img"
+                src="public/dream-project/farm-dream.jpg"
+                alt="Dream farm — livestock, flowers and landscaping"
+                width="1920"
+                height="1080"
+                loading="lazy"
+              />
+              <div class="dream-placeholder" id="dream-placeholder" hidden>
+                <span>Your farm flyer appears here</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="passion-strip" aria-label="Passions">
+        <span>Horticulture</span>
+        <span>Graphic design</span>
+        <span>Flyers</span>
+        <span>Dream farms</span>
+        <span>Colour</span>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <span class="section-label">Contact</span>
+      <h2>Say hello</h2>
+      <a href="mailto:kamalasamuel001@gmail.com" class="contact-link" id="email-link">kamalasamuel001@gmail.com</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Repudi Kamala Jeslyn</p>
+    <a href="#top" class="back-top">↑</a>
+  </footer>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <img src="" alt="" id="lightbox-img" />
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

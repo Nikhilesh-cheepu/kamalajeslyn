@@ -1,0 +1,10 @@
+{
+  "name": "kamalajeslyn-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scan-flyers": "node scripts/scan-flyers.mjs",
+    "serve": "python3 -m http.server 8080",
+    "apply-order": "node scripts/apply-order.mjs"
+  }
+}

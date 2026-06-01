@@ -1,0 +1,254 @@
+{
+  "generatedAt": "2026-06-01T15:47:54.389Z",
+  "count": 22,
+  "order": {
+    "4x5": [
+      "IMG_1247.PNG",
+      "IMG_1249.PNG",
+      "IMG_1250.PNG",
+      "IMG_1251.PNG",
+      "IMG_1252.PNG",
+      "IMG_1255.PNG",
+      "IMG_1258.JPG",
+      "IMG_1259.JPG",
+      "IMG_1260.JPG",
+      "IMG_1261.JPG",
+      "IMG_1262.JPG",
+      "IMG_1264.JPG",
+      "IMG_1265.JPG",
+      "IMG_1267.JPG",
+      "IMG_1268.JPG"
+    ],
+    "9x16": [
+      "IMG_1248.PNG",
+      "IMG_1253.PNG",
+      "IMG_1254.PNG",
+      "IMG_1256.JPG",
+      "IMG_1257.JPG",
+      "IMG_1263.JPG",
+      "IMG_1266.JPG"
+    ]
+  },
+  "items": [
+    {
+      "file": "IMG_1247.PNG",
+      "src": "public/flyers/IMG_1247.PNG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1249.PNG",
+      "src": "public/flyers/IMG_1249.PNG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1250.PNG",
+      "src": "public/flyers/IMG_1250.PNG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1251.PNG",
+      "src": "public/flyers/IMG_1251.PNG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1252.PNG",
+      "src": "public/flyers/IMG_1252.PNG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1255.PNG",
+      "src": "public/flyers/IMG_1255.PNG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1258.JPG",
+      "src": "public/flyers/IMG_1258.JPG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1259.JPG",
+      "src": "public/flyers/IMG_1259.JPG",
+      "width": 1080,
+      "height": 1350,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1260.JPG",
+      "src": "public/flyers/IMG_1260.JPG",
+      "width": 1200,
+      "height": 1500,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1261.JPG",
+      "src": "public/flyers/IMG_1261.JPG",
+      "width": 736,
+      "height": 920,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1262.JPG",
+      "src": "public/flyers/IMG_1262.JPG",
+      "width": 1199,
+      "height": 1500,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1264.JPG",
+      "src": "public/flyers/IMG_1264.JPG",
+      "width": 1199,
+      "height": 1542,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1265.JPG",
+      "src": "public/flyers/IMG_1265.JPG",
+      "width": 557,
+      "height": 717,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1267.JPG",
+      "src": "public/flyers/IMG_1267.JPG",
+      "width": 1200,
+      "height": 1600,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1268.JPG",
+      "src": "public/flyers/IMG_1268.JPG",
+      "width": 1080,
+      "height": 1080,
+      "ratioW": 4,
+      "ratioH": 5,
+      "ratioKey": "4x5",
+      "ratioLabel": "4∶5"
+    },
+    {
+      "file": "IMG_1248.PNG",
+      "src": "public/flyers/IMG_1248.PNG",
+      "width": 1080,
+      "height": 1920,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    },
+    {
+      "file": "IMG_1253.PNG",
+      "src": "public/flyers/IMG_1253.PNG",
+      "width": 1080,
+      "height": 1920,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    },
+    {
+      "file": "IMG_1254.PNG",
+      "src": "public/flyers/IMG_1254.PNG",
+      "width": 1080,
+      "height": 1920,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    },
+    {
+      "file": "IMG_1256.JPG",
+      "src": "public/flyers/IMG_1256.JPG",
+      "width": 1200,
+      "height": 1842,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    },
+    {
+      "file": "IMG_1257.JPG",
+      "src": "public/flyers/IMG_1257.JPG",
+      "width": 1200,
+      "height": 1806,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    },
+    {
+      "file": "IMG_1263.JPG",
+      "src": "public/flyers/IMG_1263.JPG",
+      "width": 1080,
+      "height": 1920,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    },
+    {
+      "file": "IMG_1266.JPG",
+      "src": "public/flyers/IMG_1266.JPG",
+      "width": 1200,
+      "height": 1928,
+      "ratioW": 9,
+      "ratioH": 16,
+      "ratioKey": "9x16",
+      "ratioLabel": "9∶16"
+    }
+  ]
+}

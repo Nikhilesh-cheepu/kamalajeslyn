@@ -1,0 +1,9 @@
+Put all your flyer images in this folder (JPG, PNG, WEBP).
+
+Then open Terminal in the project folder and run:
+
+  npm run scan-flyers
+
+Refresh the website to see your work.
+
+Read README.md in this folder for more help.
