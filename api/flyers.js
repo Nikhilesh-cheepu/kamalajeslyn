@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   try {
     const manifest = await loadManifest();
     res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate=30");
-    res.status(200).json(buildPublicPayload(manifest));
+    res.status(200).json(await buildPublicPayload(manifest));
   } catch (err) {
     console.error("GET /api/flyers", err);
     res.status(500).json({ error: "Could not load portfolio" });

@@ -14,6 +14,11 @@
   box-sizing: border-box;
 }
 
+/* display:flex on .login-screen overrides the hidden attribute otherwise */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   font-family: var(--font);
@@ -104,6 +109,11 @@ body {
   cursor: pointer;
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   width: 100%;
   background: linear-gradient(135deg, #ff6b9d, #a855f7);
@@ -114,6 +124,16 @@ body {
   background: transparent;
   color: var(--muted);
   border: 1px solid var(--border);
+}
+
+.upload-drop.is-uploading {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.upload-drop.is-dragover {
+  border-color: var(--accent-2);
+  background: rgba(78, 205, 196, 0.08);
 }
 
 .upload-drop {
@@ -130,11 +150,6 @@ body {
   color: var(--muted);
   font-size: 0.9rem;
   transition: border-color 0.2s, background 0.2s;
-}
-
-.upload-drop.is-dragover {
-  border-color: var(--accent-2);
-  background: rgba(78, 205, 196, 0.08);
 }
 
 .upload-icon {

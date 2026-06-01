@@ -2,6 +2,8 @@ const FIXED_RATIOS = ["4x5", "9x16"];
 
 let manifest = { order: { "4x5": [], "9x16": [] }, items: [] };
 let dragged = null;
+let sessionCheckGen = 0;
+let uploadInProgress = false;
 
 const loginScreen = document.getElementById("login-screen");
 const adminApp = document.getElementById("admin-app");
@@ -22,11 +24,14 @@ async function api(path, options = {}) {
 }
 
 async function checkSession() {
+  const gen = ++sessionCheckGen;
   try {
     const { authenticated } = await api("/api/auth/session");
+    if (gen !== sessionCheckGen) return;
     if (authenticated) showAdmin();
     else showLogin();
   } catch {
+    if (gen !== sessionCheckGen) return;
     showLogin();
   }
 }
@@ -46,7 +51,10 @@ loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   loginError.hidden = true;
   const password = document.getElementById("password").value;
+  const submitBtn = loginForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
   try {
+    sessionCheckGen++;
     await api("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -56,10 +64,13 @@ loginForm.addEventListener("submit", async (e) => {
   } catch (err) {
     loginError.textContent = err.message;
     loginError.hidden = false;
+  } finally {
+    submitBtn.disabled = false;
   }
 });
 
-document.getElementById("logout-btn").addEventListener("click", async () => {
+document.getElementById("logout-btn")?.addEventListener("click", async () => {
+  sessionCheckGen++;
   await api("/api/auth/logout", { method: "POST" });
   showLogin();
 });
@@ -159,43 +170,126 @@ async function saveOrder() {
   }
 }
 
-async function uploadFiles(files) {
-  if (!files.length) return;
-  uploadStatus.textContent = `Uploading ${files.length} file(s)…`;
+function collectImageFiles(fileList) {
+  return [...fileList].filter(
+    (f) =>
+      f.type.startsWith("image/") ||
+      /\.(jpe?g|png|gif|webp|heic|heif|avif)$/i.test(f.name)
+  );
+}
 
-  const form = new FormData();
-  for (const file of files) form.append("files", file);
+function formatUploadSummary(data) {
+  const n = data.count ?? data.uploaded?.length ?? 0;
+  const s = data.summary;
+  if (!s) return `Uploaded ${n} image(s).`;
+  const parts = [];
+  if (s["4x5"]) parts.push(`${s["4x5"]} → 4∶5`);
+  if (s["9x16"]) parts.push(`${s["9x16"]} → 9∶16`);
+  let msg = `Uploaded ${n} image(s)${parts.length ? ` (${parts.join(", ")})` : ""}.`;
+  if (data.skipped?.length) {
+    msg += ` Skipped ${data.skipped.length}.`;
+  }
+  return msg;
+}
+
+function readImageMeta(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve({
+        filename: file.name,
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+      });
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error(`Could not read image: ${file.name}`));
+    };
+    img.src = url;
+  });
+}
+
+async function uploadFiles(fileList) {
+  const files = collectImageFiles(fileList).sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" })
+  );
+
+  if (!files.length) {
+    uploadStatus.textContent = "No image files selected.";
+    return;
+  }
+  if (uploadInProgress) return;
+
+  uploadInProgress = true;
+  uploadDrop?.classList.add("is-uploading");
+  fileInput.disabled = true;
+  uploadStatus.textContent = `Preparing ${files.length} image(s)…`;
 
   try {
-    const res = await fetch("/api/admin/upload", {
+    const metas = await Promise.all(files.map(readImageMeta));
+
+    const { slots } = await api("/api/admin/upload-presign", {
       method: "POST",
-      credentials: "include",
-      body: form,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ files: metas }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Upload failed");
-    uploadStatus.textContent = `Uploaded ${data.uploaded?.length || 0} file(s).`;
+
+    for (let i = 0; i < files.length; i++) {
+      const slot = slots[i];
+      uploadStatus.textContent = `Uploading ${i + 1} of ${files.length} to Vercel Blob…`;
+
+      const putRes = await fetch(slot.putUrl, {
+        method: "PUT",
+        headers: { "Content-Type": slot.contentType },
+        body: files[i],
+      });
+
+      if (!putRes.ok) {
+        throw new Error(`Upload failed for ${slot.file}`);
+      }
+    }
+
+    uploadStatus.textContent = "Saving gallery…";
+
+    const data = await api("/api/admin/upload-complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slots }),
+    });
+
+    uploadStatus.textContent = formatUploadSummary(data);
     await loadManifest();
   } catch (err) {
     uploadStatus.textContent = err.message;
+  } finally {
+    uploadInProgress = false;
+    uploadDrop?.classList.remove("is-uploading");
+    fileInput.disabled = false;
+    fileInput.value = "";
   }
 }
 
-uploadDrop.addEventListener("click", () => fileInput.click());
-fileInput.addEventListener("change", () => {
-  uploadFiles([...fileInput.files]);
-  fileInput.value = "";
+fileInput?.addEventListener("change", () => {
+  if (fileInput.files?.length) uploadFiles(fileInput.files);
 });
 
-uploadDrop.addEventListener("dragover", (e) => {
+uploadDrop?.addEventListener("dragover", (e) => {
   e.preventDefault();
-  uploadDrop.classList.add("is-dragover");
+  e.stopPropagation();
+  if (!uploadInProgress) uploadDrop.classList.add("is-dragover");
 });
-uploadDrop.addEventListener("dragleave", () => uploadDrop.classList.remove("is-dragover"));
-uploadDrop.addEventListener("drop", (e) => {
+uploadDrop?.addEventListener("dragleave", (e) => {
   e.preventDefault();
   uploadDrop.classList.remove("is-dragover");
-  uploadFiles([...e.dataTransfer.files].filter((f) => f.type.startsWith("image/")));
+});
+uploadDrop?.addEventListener("drop", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  uploadDrop.classList.remove("is-dragover");
+  if (e.dataTransfer?.files?.length) uploadFiles(e.dataTransfer.files);
 });
 
 checkSession();

@@ -1,17 +1,22 @@
 # Repudi Kamala Jeslyn — Portfolio
 
-A colourful one-page portfolio for graphic design work: flyers, web design, client projects, and hobby pieces.
+A colourful one-page portfolio for graphic design work. **All flyer images live in Vercel Blob** — there is no local `public/flyers/` folder.
 
-## Preview locally
-
-Open `index.html` in your browser, or run a simple server:
+## Run locally (full stack)
 
 ```bash
-cd /Users/nikhilesh/Desktop/kamalajeslyn
-python3 -m http.server 8080
+npm install
+npm run dev:vercel
 ```
 
-Then visit [http://localhost:8080](http://localhost:8080).
+Open **http://localhost:3000** (port may vary). Use **Node 20** (`nvm use` reads `.nvmrc`).
+
+- Public site: `/`
+- Admin upload: `/admin` (password from `ADMIN_PASSWORD` in `.env.local`)
+
+Copy `.env.example` → `.env.local` and set `BLOB_READ_WRITE_TOKEN` and `ADMIN_PASSWORD` for local uploads.
+
+Do **not** use `python3 -m http.server` — the gallery and admin need API routes.
 
 ## Deploy on Vercel
 
@@ -26,63 +31,34 @@ In Vercel → Project → **Settings** → **General**:
 | Build Command | *(leave empty)* |
 | Output Directory | *(leave empty)* — **not** `public` |
 
-Then **Redeploy** the latest commit. Your site URL will be something like `https://kamalajeslyn.vercel.app`.
+Then **Redeploy**. Site URL example: `https://kamalajeslyn.vercel.app`.
 
-If you see **404 NOT_FOUND**, the Output Directory is almost always set to `public` by mistake — clear it and redeploy.
+If you see **404 NOT_FOUND**, clear Output Directory (must not be `public`) and redeploy.
 
 ## Environment variables (Vercel)
 
-In Vercel → Settings → Environment Variables, add:
-
 | Variable | Purpose |
 |----------|---------|
-| `BLOB_READ_WRITE_TOKEN` | Upload & store flyers |
+| `BLOB_READ_WRITE_TOKEN` | Read/write flyers in Vercel Blob |
 | `BLOB_STORE_ID` | From Vercel Blob dashboard |
-| `BLOB_WEBHOOK_PUBLIC_KEY` | Optional webhook key |
-| `ADMIN_PASSWORD` | Admin login (`9550` or your own) |
+| `ADMIN_PASSWORD` | Admin login (e.g. `9550`) |
+| `BLOB_WEBHOOK_PUBLIC_KEY` | Optional |
 
-Redeploy after adding variables.
+Redeploy after adding or changing variables.
 
 ## Admin panel
 
-Open **`/admin`** on your live site (e.g. `https://your-site.vercel.app/admin`).
+Open **`/admin`** on your live or local site.
 
-- Log in with your password only (no username)
-- **Upload** — images auto-sort into **4∶5** or **9∶16**
+- Log in with password only (no username)
+- **Upload** — select or drop **multiple images**; one batch upload, auto-sorted into **4∶5** or **9∶16**
 - **Drag** to reorder within each ratio
 - **Delete** with × on each thumbnail
 
-The public site loads flyers from Vercel Blob via `/api/flyers`.
-
-### Migrate existing local flyers to Blob
-
-```bash
-export BLOB_READ_WRITE_TOKEN=your_token
-npm run migrate-blob
-```
-
-## Add your flyers (legacy local)
-
-1. Copy **all** images into **`public/flyers/`** (unordered is fine).
-2. Run:
-   ```bash
-   npm run scan-flyers
-   ```
-3. Refresh the site — each poster uses its real width/height ratio on the grid.
-
-Optional rename when you know the type: `client-bakery.jpg`, `hobby-party.png`. See `public/flyers/README.md`.
+The public site loads images from Vercel Blob via `GET /api/flyers`.
 
 ## Customise
 
-- **Email:** Edit `CONTACT_EMAIL` in `script.js`.
-- **Colours:** Change CSS variables at the top of `styles.css` (`--accent-1`, etc.).
-- **Copy:** Update text in `index.html` (about, services, hero).
-
-## PDF later
-
-The site includes basic `@media print` styles. For a portfolio PDF you can:
-
-- Print to PDF from the browser (Chrome → Print → Save as PDF), or
-- Use a tool like Puppeteer / Playwright to export the page once your images are in place.
-
-Share your files in chat when ready and they can be wired into the gallery for you.
+- **Email:** `CONTACT_EMAIL` in `script.js`
+- **Colours:** CSS variables in `styles.css`
+- **Copy:** `index.html`

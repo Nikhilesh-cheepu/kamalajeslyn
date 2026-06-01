@@ -3,13 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "scan-flyers": "node scripts/scan-flyers.mjs",
-    "migrate-blob": "node scripts/migrate-to-blob.mjs",
-    "serve": "python3 -m http.server 8080",
-    "dev": "vercel dev"
+    "test:setup": "node scripts/test-setup.mjs",
+    "dev:vercel": "npx vercel dev"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "dependencies": {
-    "@vercel/blob": "^0.27.3",
-    "image-size": "^1.2.0"
+    "@vercel/blob": "^2.4.0"
   }
 }

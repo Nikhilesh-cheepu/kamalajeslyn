@@ -3,7 +3,6 @@
  */
 const CONTACT_EMAIL = "kamalasamuel001@gmail.com";
 const API_FLYERS = "/api/flyers";
-const FALLBACK_MANIFEST = "public/flyers/manifest.json";
 
 const FIXED_RATIOS = [
   { ratioKey: "4x5", ratioW: 4, ratioH: 5 },
@@ -139,15 +138,9 @@ function bindLightbox(root) {
 }
 
 async function fetchManifest() {
-  try {
-    const res = await fetch(API_FLYERS, { cache: "no-store" });
-    if (res.ok) return res.json();
-  } catch {
-    /* try fallback */
-  }
-  const fallback = await fetch(FALLBACK_MANIFEST, { cache: "no-store" });
-  if (!fallback.ok) throw new Error("manifest missing");
-  return fallback.json();
+  const res = await fetch(API_FLYERS, { cache: "no-store" });
+  if (!res.ok) throw new Error("Could not load gallery");
+  return res.json();
 }
 
 async function loadGallery() {
