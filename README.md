@@ -13,6 +13,23 @@ python3 -m http.server 8080
 
 Then visit [http://localhost:8080](http://localhost:8080).
 
+## Deploy on Vercel
+
+`index.html` is in the **project root** (not inside `public/`).
+
+In Vercel → Project → **Settings** → **General**:
+
+| Setting | Value |
+|---------|--------|
+| Framework Preset | **Other** |
+| Root Directory | *(leave empty)* |
+| Build Command | *(leave empty)* |
+| Output Directory | *(leave empty)* — **not** `public` |
+
+Then **Redeploy** the latest commit. Your site URL will be something like `https://kamalajeslyn.vercel.app`.
+
+If you see **404 NOT_FOUND**, the Output Directory is almost always set to `public` by mistake — clear it and redeploy.
+
 ## Add your flyers
 
 1. Copy **all** images into **`public/flyers/`** (unordered is fine).

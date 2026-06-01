@@ -306,38 +306,5 @@ async function loadGallery() {
   }
 }
 
-function initDreamProject() {
-  const img = document.getElementById("dream-img");
-  const placeholder = document.getElementById("dream-placeholder");
-  const frame = document.getElementById("dream-frame");
-
-  if (!img || !frame) return;
-
-  const showPlaceholder = () => {
-    frame.classList.add("is-placeholder");
-    if (placeholder) placeholder.hidden = false;
-  };
-
-  img.addEventListener("error", showPlaceholder);
-  if (!img.complete || img.naturalWidth === 0) {
-    if (img.complete) showPlaceholder();
-  }
-
-  frame.addEventListener("click", () => {
-    if (reorderMode || frame.classList.contains("is-placeholder")) return;
-    openLightbox(img.src, img.alt);
-  });
-
-  frame.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      if (!frame.classList.contains("is-placeholder")) {
-        openLightbox(img.src, img.alt);
-      }
-    }
-  });
-}
-
 setupEditNav();
 loadGallery();
-initDreamProject();
