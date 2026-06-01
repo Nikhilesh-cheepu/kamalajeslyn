@@ -112,10 +112,6 @@ function renderRatioSection({ ratioKey, ratioW, ratioH, items }, startIndex) {
     .map((item, i) => renderGalleryItem(item, startIndex + i, i))
     .join("");
 
-  const ratioLabel = ratioKey === "4x5" ? "4∶5" : "9∶16";
-  const ratioNote =
-    ratioKey === "4x5" ? "Posters & portrait flyers" : "Vertical stories & reels";
-
   return `
     <div
       class="gallery-ratio-block"
@@ -123,10 +119,6 @@ function renderRatioSection({ ratioKey, ratioW, ratioH, items }, startIndex) {
       data-ratio-w="${ratioW}"
       data-ratio-h="${ratioH}"
     >
-      <header class="gallery-ratio-head">
-        <span class="gallery-ratio-label">${ratioLabel}</span>
-        <span class="gallery-ratio-note">${ratioNote}</span>
-      </header>
       <div class="gallery-grid">${cards}</div>
     </div>
   `;
