@@ -1,9 +1,10 @@
 import { requireAuth } from "../../lib/auth.mjs";
 import {
-  loadManifest,
+  loadManifestFromStore,
   saveManifest,
 } from "../../lib/manifest.mjs";
 import { slotToManifestItem } from "../../lib/blob-upload.mjs";
+import { generateThumbnailForItem } from "../../lib/thumbnails.mjs";
 import { parseJsonBody } from "../../lib/parse-json-body.mjs";
 
 export default async function handler(req, res) {
@@ -22,13 +23,18 @@ export default async function handler(req, res) {
       return;
     }
 
-    const manifest = await loadManifest();
+    const manifest = await loadManifestFromStore();
     const uploaded = [];
     const skipped = [];
 
     for (const slot of slots) {
       try {
         const item = await slotToManifestItem(slot);
+        try {
+          item.thumbPathname = await generateThumbnailForItem(item);
+        } catch (err) {
+          console.error("thumbnail on upload", item.id, err.message);
+        }
         manifest.items.push(item);
         manifest.order[item.ratioKey].push(item.id);
         uploaded.push(item);

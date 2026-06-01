@@ -1,5 +1,5 @@
 import { requireAuth } from "../../lib/auth.mjs";
-import { loadManifest, withResolvedUrls } from "../../lib/manifest.mjs";
+import { loadManifestFromStore, withResolvedUrls } from "../../lib/manifest.mjs";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   if (!requireAuth(req, res)) return;
 
   try {
-    const manifest = await loadManifest();
+    const manifest = await loadManifestFromStore();
     res.status(200).json(await withResolvedUrls(manifest));
   } catch (err) {
     console.error("admin manifest", err);

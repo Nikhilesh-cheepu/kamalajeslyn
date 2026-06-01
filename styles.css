@@ -843,7 +843,18 @@ code {
   }
 }
 
-/* Portfolio — two ratio sections, compact on mobile */
+.gallery-loading {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.gallery-stacks.has-items .gallery-loading {
+  display: none;
+}
+
+/* Portfolio — two layout groups, compact on mobile */
 .gallery-stacks {
   display: flex;
   flex-direction: column;

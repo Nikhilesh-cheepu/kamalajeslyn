@@ -1,6 +1,7 @@
 import { requireAuth } from "../../lib/auth.mjs";
 import { loadManifestFromStore, withResolvedUrls } from "../../lib/manifest.mjs";
 import { reconcileManifestWithBlob } from "../../lib/sync-blob.mjs";
+import { ensureThumbnailsForManifest } from "../../lib/thumbnails.mjs";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -12,7 +13,10 @@ export default async function handler(req, res) {
   try {
     const stored = await loadManifestFromStore();
     const result = await reconcileManifestWithBlob(stored, { save: true });
-    const payload = await withResolvedUrls(result.manifest);
+    const withThumbs = await ensureThumbnailsForManifest(result.manifest, {
+      save: true,
+    });
+    const payload = await withResolvedUrls(withThumbs);
 
     res.status(200).json({
       ok: true,

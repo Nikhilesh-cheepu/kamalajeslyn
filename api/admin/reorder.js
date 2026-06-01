@@ -1,5 +1,5 @@
 import { requireAuth } from "../../lib/auth.mjs";
-import { loadManifest, saveManifest } from "../../lib/manifest.mjs";
+import { loadManifestFromStore, saveManifest } from "../../lib/manifest.mjs";
 
 export default async function handler(req, res) {
   if (req.method !== "PUT" && req.method !== "POST") {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const manifest = await loadManifest();
+    const manifest = await loadManifestFromStore();
     const ids = new Set(manifest.items.map((i) => i.id));
 
     manifest.order = {

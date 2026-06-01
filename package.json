@@ -5,6 +5,7 @@
   "scripts": {
     "test:setup": "node scripts/test-setup.mjs",
     "sync-blob": "node scripts/sync-blob.mjs",
+    "generate-thumbs": "node scripts/generate-thumbs.mjs",
     "dev:vercel": "npx vercel dev"
   },
   "engines": {
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "@vercel/blob": "^2.4.0",
-    "image-size": "^1.2.0"
+    "image-size": "^1.2.0",
+    "sharp": "^0.33.5"
   }
 }

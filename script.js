@@ -43,6 +43,18 @@ let lightboxIndex = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 
+function preloadLightboxNeighbors() {
+  const n = lightboxSlides.length;
+  if (n <= 1) return;
+  const prev = (lightboxIndex - 1 + n) % n;
+  const next = (lightboxIndex + 1) % n;
+  for (const i of [prev, next]) {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = lightboxSlides[i].src;
+  }
+}
+
 function showLightboxSlide(index) {
   if (!lightboxSlides.length) return;
   lightboxIndex = (index + lightboxSlides.length) % lightboxSlides.length;
@@ -57,6 +69,7 @@ function showLightboxSlide(index) {
   const hideNav = lightboxSlides.length <= 1;
   lightboxPrev.hidden = hideNav;
   lightboxNext.hidden = hideNav;
+  preloadLightboxNeighbors();
 }
 
 function openLightbox(index) {
@@ -152,11 +165,11 @@ function sortItemsIntoFixedRatios(items, order) {
   }));
 }
 
-function renderGalleryItem(item, index, staggerIndex) {
-  const src = item.url || item.src;
-  const id = item.id || item.file;
+function renderGalleryItem(item, index, priority) {
+  const thumb = item.thumbUrl || item.url || item.src;
   const alt = `Graphic design work ${index + 1} by Repudi Kamala Jeslyn`;
-  const delay = Math.min(staggerIndex, 14) * 35;
+  const delay = Math.min(priority, 14) * 35;
+  const eager = priority < 8;
 
   return `
     <article class="gallery-item" style="animation-delay: ${delay}ms">
@@ -168,11 +181,13 @@ function renderGalleryItem(item, index, staggerIndex) {
         aria-label="${escapeHtml(alt)}"
       >
         <img
-          src="${escapeHtml(src)}"
+          src="${escapeHtml(thumb)}"
           alt="${escapeHtml(alt)}"
           width="${item.width || ""}"
           height="${item.height || ""}"
-          loading="lazy"
+          loading="${eager ? "eager" : "lazy"}"
+          decoding="async"
+          ${eager ? 'fetchpriority="high"' : ""}
         />
       </div>
     </article>
@@ -181,7 +196,7 @@ function renderGalleryItem(item, index, staggerIndex) {
 
 function renderRatioSection({ ratioKey, ratioW, ratioH, items }, startIndex) {
   const cards = items
-    .map((item, i) => renderGalleryItem(item, startIndex + i, i))
+    .map((item, i) => renderGalleryItem(item, startIndex + i, startIndex + i))
     .join("");
 
   return `
@@ -226,19 +241,37 @@ function bindLightbox(root) {
   });
 }
 
+function preconnectBlobOrigin(url) {
+  try {
+    const origin = new URL(url).origin;
+    if (document.querySelector(`link[rel="preconnect"][href="${origin}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "preconnect";
+    link.href = origin;
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+  } catch {
+    /* ignore */
+  }
+}
+
 async function fetchManifest() {
-  const res = await fetch(API_FLYERS, { cache: "no-store" });
+  const res = await fetch(API_FLYERS);
   if (!res.ok) throw new Error("Could not load gallery");
   return res.json();
 }
 
 async function loadGallery() {
   const gallery = document.getElementById("gallery");
+  const loadingEl = document.getElementById("gallery-loading");
 
   try {
     const data = await fetchManifest();
     const items = data.items || [];
     const order = data.order || { "4x5": [], "9x16": [] };
+
+    const firstUrl = items[0]?.thumbUrl || items[0]?.url;
+    if (firstUrl) preconnectBlobOrigin(firstUrl);
 
     const groups = sortItemsIntoFixedRatios(items, order).filter((g) => g.items.length > 0);
     let index = 0;
@@ -263,7 +296,7 @@ async function loadGallery() {
       revealObserver.observe(block);
     });
   } catch {
-    /* silent */
+    if (loadingEl) loadingEl.textContent = "Could not load gallery.";
   }
 }
 

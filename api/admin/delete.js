@@ -1,9 +1,10 @@
 import { requireAuth } from "../../lib/auth.mjs";
 import {
-  loadManifest,
+  loadManifestFromStore,
   saveManifest,
   deleteBlobUrl,
 } from "../../lib/manifest.mjs";
+import { deleteThumbnail } from "../../lib/thumbnails.mjs";
 import { parseJsonBody } from "../../lib/parse-json-body.mjs";
 
 function collectIds(body, query) {
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const manifest = await loadManifest();
+    const manifest = await loadManifestFromStore();
     const idSet = new Set(ids);
     const toDelete = manifest.items.filter((i) => idSet.has(i.id));
 
@@ -46,6 +47,7 @@ export default async function handler(req, res) {
         } catch {
           if (item.pathname) await deleteBlobUrl(item.pathname);
         }
+        await deleteThumbnail(item.id);
       })
     );
 
