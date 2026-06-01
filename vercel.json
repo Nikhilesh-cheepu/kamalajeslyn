@@ -9,6 +9,7 @@
   "rewrites": [{ "source": "/admin", "destination": "/admin.html" }],
   "functions": {
     "api/admin/upload-presign.js": { "maxDuration": 30 },
-    "api/admin/upload-complete.js": { "maxDuration": 60, "memory": 1024 }
+    "api/admin/upload-complete.js": { "maxDuration": 60, "memory": 1024 },
+    "api/admin/sync.js": { "maxDuration": 60, "memory": 1024 }
   }
 }

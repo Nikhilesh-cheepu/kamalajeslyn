@@ -4,12 +4,14 @@
   "type": "module",
   "scripts": {
     "test:setup": "node scripts/test-setup.mjs",
+    "sync-blob": "node scripts/sync-blob.mjs",
     "dev:vercel": "npx vercel dev"
   },
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
-    "@vercel/blob": "^2.4.0"
+    "@vercel/blob": "^2.4.0",
+    "image-size": "^1.2.0"
   }
 }

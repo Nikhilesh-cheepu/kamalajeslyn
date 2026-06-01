@@ -189,10 +189,27 @@ body {
   gap: 0.4rem;
 }
 
-.selection-count {
-  margin-left: auto;
+.selection-count,
+.gallery-count {
   font-size: 0.8rem;
   color: var(--accent-2);
+}
+
+.gallery-count {
+  margin-left: auto;
+}
+
+.selection-count {
+  margin-left: 0;
+}
+
+.selection-actions:not([hidden]) ~ .gallery-count {
+  margin-left: 0;
+}
+
+.btn-sm {
+  font-size: 0.78rem;
+  padding: 0.4rem 0.75rem;
 }
 
 .btn-danger {

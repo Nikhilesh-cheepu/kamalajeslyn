@@ -21,6 +21,8 @@ const clearSelectionBtn = document.getElementById("clear-selection-btn");
 const deleteSelectedBtn = document.getElementById("delete-selected-btn");
 const cancelSelectBtn = document.getElementById("cancel-select-btn");
 const selectionCount = document.getElementById("selection-count");
+const syncBlobBtn = document.getElementById("sync-blob-btn");
+const galleryCount = document.getElementById("gallery-count");
 
 async function api(path, options = {}) {
   const res = await fetch(path, {
@@ -198,10 +200,47 @@ async function deleteOne(id) {
   }
 }
 
-async function loadManifest() {
-  manifest = await api("/api/admin/manifest");
-  renderGrids();
+function updateGalleryCount() {
+  const n = manifest.items?.length ?? 0;
+  if (galleryCount) {
+    galleryCount.textContent = n ? `${n} in gallery · Blob synced` : "No flyers yet";
+  }
 }
+
+async function loadManifest() {
+  uploadStatus.textContent = "Loading from Vercel Blob…";
+  try {
+    manifest = await api("/api/admin/manifest");
+    renderGrids();
+    updateGalleryCount();
+    uploadStatus.textContent = manifest.items?.length
+      ? `${manifest.items.length} flyer(s) loaded.`
+      : "No flyers yet — upload or tap Sync from Blob.";
+  } catch (err) {
+    uploadStatus.textContent = err.message;
+  }
+}
+
+syncBlobBtn?.addEventListener("click", async () => {
+  syncBlobBtn.disabled = true;
+  uploadStatus.textContent = "Syncing with Vercel Blob…";
+  try {
+    const data = await api("/api/admin/sync", { method: "POST" });
+    manifest = data;
+    renderGrids();
+    updateGalleryCount();
+    const parts = [];
+    if (data.added) parts.push(`${data.added} added`);
+    if (data.removed) parts.push(`${data.removed} removed`);
+    uploadStatus.textContent = parts.length
+      ? `Synced (${parts.join(", ")}). ${data.count} total.`
+      : `Already in sync. ${data.count} flyer(s).`;
+  } catch (err) {
+    uploadStatus.textContent = err.message;
+  } finally {
+    syncBlobBtn.disabled = false;
+  }
+});
 
 function renderGrids() {
   const byId = Object.fromEntries(manifest.items.map((i) => [i.id, i]));

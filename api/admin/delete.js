@@ -39,7 +39,15 @@ export default async function handler(req, res) {
       return;
     }
 
-    await Promise.all(toDelete.map((item) => deleteBlobUrl(item.url)));
+    await Promise.all(
+      toDelete.map(async (item) => {
+        try {
+          await deleteBlobUrl(item.url);
+        } catch {
+          if (item.pathname) await deleteBlobUrl(item.pathname);
+        }
+      })
+    );
 
     const deletedIds = new Set(toDelete.map((i) => i.id));
     manifest.items = manifest.items.filter((i) => !deletedIds.has(i.id));
