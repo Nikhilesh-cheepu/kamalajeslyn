@@ -103,16 +103,27 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.logo {
+.logo-wrap {
+  display: flex;
+  align-items: baseline;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.35rem;
-  color: var(--text);
-  text-decoration: none;
   letter-spacing: -0.02em;
 }
 
+.logo-wrap .logo {
+  font-size: inherit;
+  color: var(--text);
+  text-decoration: none;
+}
+
 .logo-dot {
+  color: var(--accent-1);
+}
+
+.logo-dot-secret {
+  text-decoration: none;
   color: var(--accent-1);
 }
 

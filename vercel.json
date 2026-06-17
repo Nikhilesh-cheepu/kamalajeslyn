@@ -6,7 +6,11 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [{ "source": "/admin", "destination": "/admin.html" }],
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/s", "destination": "/s.html" },
+    { "source": "/sweety", "destination": "/sweety.html" }
+  ],
   "functions": {
     "api/admin/upload-presign.js": { "maxDuration": 30 },
     "api/admin/upload-complete.js": { "maxDuration": 60, "memory": 1024 },

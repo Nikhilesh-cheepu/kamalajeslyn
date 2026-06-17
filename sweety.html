@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Happy Birthday My Sweety 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --rose:#c0392b;
+  --rose-light:#e8a09a;
+  --gold:#c9a96e;
+  --cream:#fff8f2;
+  --dark:#1c0a0a;
+  --text:#2d1010;
+  --muted:#8b5e5e;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--dark);
+  font-family:'Cormorant Garamond',serif;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.petal{
+  position:fixed;font-size:14px;
+  animation:petalFall linear infinite;
+  opacity:0;pointer-events:none;z-index:0;
+}
+@keyframes petalFall{
+  0%{transform:translateY(-30px) rotate(0deg) translateX(0);opacity:0.9;}
+  50%{transform:translateY(50vh) rotate(180deg) translateX(20px);opacity:0.6;}
+  100%{transform:translateY(105vh) rotate(360deg) translateX(-10px);opacity:0;}
+}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(180deg,#1c0a0a 0%,#2d0d0d 60%,#1a0505 100%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:60px 28px 80px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 40%,#c0392b18 0%,transparent 70%);
+}
+.hero-eyebrow{
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;letter-spacing:5px;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:24px;opacity:0.8;
+}
+.hero-title{
+  font-family:'Great Vibes',cursive;
+  font-size:68px;line-height:1.1;
+  color:#fff;
+  text-shadow:0 0 60px #c0392b60;
+  margin-bottom:14px;
+}
+.hero-sub{
+  font-family:'Great Vibes',cursive;
+  font-size:34px;color:var(--rose-light);
+  margin-bottom:40px;
+}
+.hero-divider{
+  display:flex;align-items:center;gap:12px;
+  width:100%;max-width:260px;margin:0 auto 36px;
+}
+.hero-divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.hero-date{
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--muted);
+}
+.scroll-hint{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:bounce 2s ease-in-out infinite;
+}
+.scroll-hint span{font-size:11px;letter-spacing:2px;color:var(--muted);font-family:'Montserrat',sans-serif;}
+.scroll-hint-arrow{font-size:20px;color:var(--rose-light);}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(8px);}}
+
+/* PAPER */
+.paper{background:var(--cream);padding:52px 28px;position:relative;z-index:1;}
+.paper+.paper{border-top:1px solid #e8d5c4;}
+.section-label{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--rose);
+  margin-bottom:20px;display:block;
+}
+.salutation{
+  font-style:italic;font-size:28px;
+  color:var(--rose);line-height:1.4;
+  margin-bottom:28px;font-weight:300;
+}
+.body-p{
+  font-size:19px;line-height:2;
+  color:#2d1010;font-weight:300;
+  margin-bottom:22px;
+}
+.body-p em{font-style:italic;color:var(--rose);font-weight:400;}
+
+/* MOMENTS */
+.moments-section{
+  background:linear-gradient(160deg,#2d0d0d,#1c0a0a);
+  padding:56px 28px;position:relative;z-index:1;
+}
+.moments-title{
+  font-family:'Great Vibes',cursive;
+  font-size:44px;color:#fff;
+  text-align:center;margin-bottom:8px;
+  text-shadow:0 0 40px #c0392b50;
+}
+.moments-subtitle{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--gold);
+  text-align:center;margin-bottom:44px;
+}
+.moment-card{
+  background:linear-gradient(135deg,#2d1010,#1c0505);
+  border:1px solid #c0392b25;
+  border-radius:12px;
+  padding:24px 22px;
+  margin-bottom:14px;
+  display:flex;gap:18px;align-items:flex-start;
+}
+.moment-icon{font-size:26px;flex-shrink:0;margin-top:3px;}
+.moment-action{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:7px;display:block;
+}
+.moment-desc{
+  font-size:17px;line-height:1.75;
+  color:#f0d8d8;font-style:italic;font-weight:300;
+}
+
+/* GOD SECTION */
+.god-section{
+  background:var(--cream);
+  padding:52px 28px;position:relative;z-index:1;
+}
+
+/* LANGUAGES */
+.languages-section{
+  background:linear-gradient(160deg,#1c0a0a,#2d0d0d);
+  padding:56px 28px;position:relative;z-index:1;
+}
+.lang-title{
+  font-family:'Great Vibes',cursive;
+  font-size:44px;color:#fff;
+  text-align:center;margin-bottom:6px;
+  text-shadow:0 0 40px #c0392b50;
+}
+.lang-subtitle{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);text-align:center;margin-bottom:14px;
+}
+.lang-intro{
+  font-style:italic;font-size:17px;
+  color:#f0d8d8;line-height:1.75;
+  text-align:center;margin-bottom:36px;
+  padding:0 6px;
+}
+.lang-list{display:flex;flex-direction:column;}
+.lang-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px 0;border-bottom:1px solid #c0392b18;
+}
+.lang-item:last-child{border-bottom:none;}
+.lang-name{
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);
+  flex:0 0 100px;
+}
+.lang-phrase{
+  font-style:italic;font-size:18px;
+  color:var(--rose-light);text-align:right;flex:1;
+}
+
+/* BIBLE VERSES */
+.verses-section{
+  background:var(--cream);
+  padding:56px 28px;position:relative;z-index:1;
+}
+.verses-title{
+  font-family:'Great Vibes',cursive;
+  font-size:44px;color:var(--rose);
+  text-align:center;margin-bottom:6px;
+}
+.verses-subtitle{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);text-align:center;margin-bottom:44px;
+}
+.verse-item{
+  margin-bottom:32px;padding-bottom:32px;
+  border-bottom:1px solid #e8d5c4;
+}
+.verse-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.verse-ref{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--rose);
+  margin-bottom:10px;display:block;
+}
+.verse-quote{
+  font-style:italic;font-size:20px;
+  line-height:1.75;color:#4a2510;font-weight:300;
+}
+.verse-quote::before{content:'\201C';color:var(--rose-light);font-size:36px;line-height:0;vertical-align:-14px;margin-right:4px;}
+.verse-quote::after{content:'\201D';color:var(--rose-light);font-size:36px;line-height:0;vertical-align:-14px;margin-left:4px;}
+
+/* CLOSING */
+.closing-section{
+  background:linear-gradient(160deg,#2d0d0d,#1c0a0a);
+  padding:56px 28px 80px;
+  position:relative;z-index:1;
+  text-align:center;
+}
+.closing-p{
+  font-size:19px;line-height:2;
+  color:#f0d8d8;font-weight:300;
+  font-style:italic;margin-bottom:20px;
+  text-align:left;
+}
+.closing-p em{color:var(--rose-light);font-style:normal;font-weight:500;}
+.closing-divider{
+  display:flex;align-items:center;gap:12px;
+  width:100%;max-width:220px;margin:40px auto;
+}
+.closing-divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.closing-sign-from{
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:6px;text-align:center;
+}
+.closing-role{
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:16px;text-align:center;
+}
+.closing-signature{
+  font-family:'Great Vibes',cursive;
+  font-size:62px;color:#fff;
+  text-shadow:0 0 40px #c0392b50;
+  line-height:1.2;text-align:center;
+}
+.hearts-row{
+  margin-top:44px;font-size:20px;
+  letter-spacing:10px;text-align:center;
+  animation:heartbeat 1.8s ease-in-out infinite;
+}
+@keyframes heartbeat{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+
+/* INTERLUDE */
+.interlude{
+  background:linear-gradient(135deg,#1c0a0a,#2d0d0d);
+  padding:52px 28px;text-align:center;
+  position:relative;z-index:1;
+}
+.interlude-quote{
+  font-family:'Great Vibes',cursive;
+  font-size:34px;color:var(--rose-light);
+  line-height:1.55;text-shadow:0 0 30px #c0392b40;
+}
+.interlude-attr{
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);
+  margin-top:16px;
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;}
+  .petal,.scroll-hint,.hearts-row{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<script>
+if (sessionStorage.getItem("kj_bday_unlock") !== "1") {
+  location.replace("/s");
+}
+</script>
+
+<script>
+const p=['🌹','🌸','❤️','🌺','💕','✨','🌷','💗'];
+for(let i=0;i<14;i++){
+  const el=document.createElement('div');
+  el.className='petal';
+  el.textContent=p[Math.floor(Math.random()*p.length)];
+  el.style.cssText=`left:${Math.random()*100}vw;font-size:${10+Math.random()*14}px;animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*12}s;`;
+  document.body.appendChild(el);
+}
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1});
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+});
+</script>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="reveal">
+    <div class="hero-eyebrow">18 · June · 2003</div>
+    <div class="hero-title">Happy Birthday</div>
+    <div class="hero-sub">My Sweety 💗</div>
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <div>🌹</div>
+      <div class="hero-divider-line"></div>
+    </div>
+    <div class="hero-date">A letter written only for you</div>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll to read</span>
+    <div class="scroll-hint-arrow">↓</div>
+  </div>
+</section>
+
+<!-- OPENING -->
+<section class="paper">
+  <div class="reveal">
+    <span class="section-label">From My Heart</span>
+    <div class="salutation">My dearest Sweety,</div>
+    <p class="body-p">
+      Before I say anything else — I want to thank God. With everything in me. Because you are not something I deserved or even knew to ask for. You are something He chose to give me, quietly and graciously, in His own perfect timing. And every day I get to be near you, I see His goodness in the most beautiful, human form.
+    </p>
+    <p class="body-p">
+      On the 18th of June 2003, God did something wonderful. He brought you into this world — and the world has been more beautiful ever since. Not just for me. For everyone who knows you. But <em>especially</em> for me.
+    </p>
+    <p class="body-p">
+      I think about the fact that I came into this world just a few months after you — February 2004 — and I like to believe God was already writing our story before either of us could read. That He had already decided. That somewhere in His plan, the two of us were always meant to find each other.
+    </p>
+    <p class="body-p">
+      So on your birthday, I don't just want to celebrate you — I want to praise the God who made you. Because everything you are is His work. And it is the most beautiful work I have ever seen.
+    </p>
+  </div>
+</section>
+
+<!-- INTERLUDE -->
+<section class="interlude">
+  <div class="reveal">
+    <div class="interlude-quote">"I have loved you with an everlasting love; I have drawn you with unfailing kindness."</div>
+    <div class="interlude-attr">Jeremiah 31:3</div>
+  </div>
+</section>
+
+<!-- THINGS SHE DOES -->
+<section class="moments-section">
+  <div class="reveal">
+    <div class="moments-title">Everything You Do</div>
+    <div class="moments-subtitle">Every moment · Every breath · Every you</div>
+  </div>
+
+  <div class="reveal" style="margin-bottom:36px;padding:0 4px;">
+    <p style="font-size:18px;line-height:1.9;color:#f0d8d8;font-weight:300;font-style:italic;text-align:center;">
+      I love everything about you. And I mean that — <em style="color:var(--rose-light);font-style:normal;">everything.</em> There are so many things I notice, so many little things I carry quietly in my heart, that I honestly cannot put them all into words. Some feelings are just too full for language. But I want to try — even just a little — because you deserve to know.
+    </p>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🌅</div>
+    <div>
+      <span class="moment-action">When you wake up</span>
+      <div class="moment-desc">That sleepy face, those slow blinking eyes — you are most beautiful when the world hasn't touched you yet.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🌬️</div>
+    <div>
+      <span class="moment-action">When you breathe</span>
+      <div class="moment-desc">Even this. Just the fact that you are alive, somewhere in this world — I am grateful for it every single day.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🚶‍♀️</div>
+    <div>
+      <span class="moment-action">When you walk</span>
+      <div class="moment-desc">The world keeps going around you but my eyes always find you first. You don't even know you do it — that's exactly why it's so beautiful.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🪑</div>
+    <div>
+      <span class="moment-action">When you sit</span>
+      <div class="moment-desc">You settle into a moment like you belong exactly there. A quiet grace you carry without even knowing it.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">😂</div>
+    <div>
+      <span class="moment-action">When you laugh</span>
+      <div class="moment-desc">Nothing in this world sounds better. I would do anything — anything — to be the reason for that laugh.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🤫</div>
+    <div>
+      <span class="moment-action">When you go quiet</span>
+      <div class="moment-desc">I never interrupt. I just wait for you to come back — and every time you do, I fall a little more.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🍽️</div>
+    <div>
+      <span class="moment-action">When you eat</span>
+      <div class="moment-desc">Although you don't eat much — and honestly the way you picky eat like a little kid, so selective, so particular — I find it so endearing. Only you could make being difficult about food look this adorable.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">😴</div>
+    <div>
+      <span class="moment-action">When you sleep</span>
+      <div class="moment-desc">Every worry gone. Every guard down. Just you, purely and quietly you — painted in peace.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🎶</div>
+    <div>
+      <span class="moment-action">When you hum or sing</span>
+      <div class="moment-desc">When you don't even realise you're doing it — just softly to yourself — I stop everything and just listen.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">😤</div>
+    <div>
+      <span class="moment-action">When you are upset</span>
+      <div class="moment-desc">Your heart is so full it spills over sometimes. That is never a weakness — that is everything. And I will always be here for it.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🤗</div>
+    <div>
+      <span class="moment-action">When you hug me</span>
+      <div class="moment-desc">The whole world goes quiet. You have arms that feel like home. I never want to leave.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">✨</div>
+    <div>
+      <span class="moment-action">When you get excited</span>
+      <div class="moment-desc">Eyes wide, talking fast — when something lights you up, you become the most radiant thing I have ever seen.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">🙏</div>
+    <div>
+      <span class="moment-action">When you pray</span>
+      <div class="moment-desc">The way your whole face softens and settles into trust — in those moments I see exactly who God made you to be.</div>
+    </div>
+  </div>
+
+  <div class="reveal moment-card">
+    <div class="moment-icon">💭</div>
+    <div>
+      <span class="moment-action">In every ordinary moment</span>
+      <div class="moment-desc">There is not a version of you I do not love. Every single one. I choose all of you — always, without question, without end.</div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:28px;padding:24px 20px;background:linear-gradient(135deg,#2d1010,#1c0505);border-radius:12px;border:1px solid #c0392b25;text-align:center;">
+    <p style="font-size:17px;line-height:1.85;color:#f0d8d8;font-style:italic;font-weight:300;">
+      And this list will never be complete. Every day you do something new that I add quietly to my heart. There are not enough words, not enough pages, not enough languages in this world to hold everything I love about you. That is the truth.
+    </p>
+  </div>
+</section>
+
+<!-- GOD / GRATITUDE -->
+<section class="god-section paper">
+  <div class="reveal">
+    <span class="section-label">Praise &amp; Gratitude</span>
+    <div class="salutation">Thank You, Lord.</div>
+    <p class="body-p">
+      I want to take a moment on your birthday — not just to celebrate you, but to genuinely praise God for you. Because everything you are — your kindness, your laughter, your faith, your heart — none of it happened by accident. <em>God was intentional about you.</em> He knit you together. He knew your name before the 18th of June ever came.
+    </p>
+    <p class="body-p">
+      And then, by His grace, He placed you in my life. That is not something I take lightly. That is something I wake up grateful for every single day — including today, especially today.
+    </p>
+  </div>
+
+  <div class="reveal" style="background:linear-gradient(135deg,#fff0e8,#ffe8d8);border-left:3px solid var(--rose);border-radius:0 12px 12px 0;padding:28px 24px;margin:28px 0;">
+    <p style="font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--rose);margin-bottom:20px;">A Prayer For Her Health</p>
+
+    <p style="font-size:18px;line-height:1.9;color:#2d1010;font-weight:300;font-style:italic;margin-bottom:22px;">
+      Lord, I lift her up to You today. You said in Your word — <em style="color:var(--rose);">"I am the Lord who heals you"</em> (Exodus 15:26) — and I stand on that promise for her. Let every part of her body be strong and whole. Let her wake up every morning with energy, with health, with the fullness of life You promised her.
+    </p>
+
+    <p style="font-size:18px;line-height:1.9;color:#2d1010;font-weight:300;font-style:italic;margin-bottom:22px;">
+      Your word says — <em style="color:var(--rose);">"Beloved, I pray that you may prosper in all things and be in health, just as your soul prospers"</em> (3 John 1:2). That is my prayer for her, Lord. Every single day. That her body prospers the way her soul does — beautifully, fully, completely.
+    </p>
+
+    <p style="font-size:18px;line-height:1.9;color:#2d1010;font-weight:300;font-style:italic;margin-bottom:0;">
+      And <em style="color:var(--rose);">"He heals the brokenhearted and binds up their wounds"</em> (Psalm 147:3) — so wherever she carries anything silently, anything unseen, Lord — meet her there. Heal her there. Let this birthday mark the beginning of her healthiest, strongest, most joy-filled year yet. In Jesus' name. Amen.
+    </p>
+  </div>
+
+  <div class="reveal">
+    <p class="body-p">
+      Lord, bless her this year with more than she can ask or imagine. Give her peace, joy, health, and the fullness of Your love in every single day ahead. She deserves nothing less.
+    </p>
+  </div>
+</section>
+
+<!-- INTERLUDE 2 -->
+<section class="interlude">
+  <div class="reveal">
+    <div class="interlude-quote">"You are altogether beautiful, my darling — there is no flaw in you."</div>
+    <div class="interlude-attr">Song of Solomon 4:7</div>
+  </div>
+</section>
+
+<!-- 23 LANGUAGES -->
+<section class="languages-section">
+  <div class="reveal">
+    <div class="lang-title">I Love You</div>
+    <div class="lang-subtitle">In 23 languages · For every year of you</div>
+    <div class="lang-intro">
+      You have been on this earth for 23 years — and I wanted to say this one thing, the most important thing, in 23 different ways. One for every year God kept you, shaped you, and brought you closer to me.
+    </div>
+  </div>
+  <div class="lang-list">
+    <div class="reveal lang-item"><span class="lang-name">Telugu</span><span class="lang-phrase">Nenu Ninnu Premisthunnanu</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Hindi</span><span class="lang-phrase">Main Tumse Pyaar Karta Hoon</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Bengali</span><span class="lang-phrase">Ami Tomake Bhalobashi</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Tamil</span><span class="lang-phrase">Naan Unnai Kaadhalikkiren</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Kannada</span><span class="lang-phrase">Naanu Ninna Preethisuttene</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Malayalam</span><span class="lang-phrase">Njaan Ninne Sthnehi-kkunnu</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Marathi</span><span class="lang-phrase">Mi Tujhyavar Prem Karto</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Urdu</span><span class="lang-phrase">Main Aap Se Mohabbat Karta Hoon</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Spanish</span><span class="lang-phrase">Te Amo</span></div>
+    <div class="reveal lang-item"><span class="lang-name">French</span><span class="lang-phrase">Je T'aime</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Italian</span><span class="lang-phrase">Ti Amo</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Portuguese</span><span class="lang-phrase">Eu Te Amo</span></div>
+    <div class="reveal lang-item"><span class="lang-name">German</span><span class="lang-phrase">Ich Liebe Dich</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Russian</span><span class="lang-phrase">Ya Tebya Lyublyu</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Japanese</span><span class="lang-phrase">Aishiteru</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Korean</span><span class="lang-phrase">Saranghae</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Mandarin</span><span class="lang-phrase">Wo Ai Ni</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Arabic</span><span class="lang-phrase">Ana Uhibbuka</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Turkish</span><span class="lang-phrase">Seni Seviyorum</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Swahili</span><span class="lang-phrase">Nakupenda</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Greek</span><span class="lang-phrase">S'agapo</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Dutch</span><span class="lang-phrase">Ik Hou Van Jou</span></div>
+    <div class="reveal lang-item"><span class="lang-name">Persian</span><span class="lang-phrase">Doostet Daram</span></div>
+  </div>
+</section>
+
+<!-- BIBLE VERSES -->
+<section class="verses-section">
+  <div class="reveal">
+    <div class="verses-title">What Scripture Says</div>
+    <div class="verses-subtitle">Words written long ago · That feel written for you</div>
+  </div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 4:7</span><div class="verse-quote">You are altogether beautiful, my darling; there is no flaw in you.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 8:7</span><div class="verse-quote">Many waters cannot quench love; rivers cannot sweep it away.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 3:4</span><div class="verse-quote">I found the one my heart loves. I held him and would not let him go.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 8:6</span><div class="verse-quote">Place me like a seal over your heart, for love is as strong as death.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 2:16</span><div class="verse-quote">My beloved is mine and I am his.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 1:15</span><div class="verse-quote">How beautiful you are, my darling! Oh, how beautiful!</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 7:10</span><div class="verse-quote">I belong to my beloved, and his desire is for me.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 2:4</span><div class="verse-quote">His banner over me is love.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">1 Corinthians 13:4–8</span><div class="verse-quote">Love is patient, love is kind. It does not envy, it does not boast. Love never fails.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">1 Corinthians 13:7</span><div class="verse-quote">Love bears all things, believes all things, hopes all things, endures all things.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Ruth 1:16</span><div class="verse-quote">Where you go I will go, and where you stay I will stay.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Jeremiah 31:3</span><div class="verse-quote">I have loved you with an everlasting love; I have drawn you with unfailing kindness.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Romans 8:38–39</span><div class="verse-quote">Neither death nor life, nor anything else in all creation, will be able to separate us from love.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">1 John 4:18</span><div class="verse-quote">There is no fear in love. But perfect love drives out fear.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Zephaniah 3:17</span><div class="verse-quote">He will rejoice over you with singing.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Ephesians 3:17–18</span><div class="verse-quote">Rooted and grounded in love — may you have strength to comprehend its breadth and length and height and depth.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">John 15:13</span><div class="verse-quote">Greater love has no one than this: to lay down one's life for one's friends.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Proverbs 10:12</span><div class="verse-quote">Love covers over all wrongs.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 6:3</span><div class="verse-quote">I am my beloved's and my beloved is mine.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 1:2</span><div class="verse-quote">Your love is better than wine.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">1 John 4:7</span><div class="verse-quote">Let us love one another, for love comes from God.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Psalm 139:14</span><div class="verse-quote">You are fearfully and wonderfully made.</div></div>
+  <div class="reveal verse-item"><span class="verse-ref">Song of Solomon 2:3</span><div class="verse-quote">I delight to sit in his shade, and his fruit is sweet to my taste.</div></div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing-section">
+  <div class="reveal">
+    <p class="closing-p">Happy Birthday, my love. I pray this year is the most beautiful one you have lived so far. That God meets you in every quiet moment, that joy finds you even in the ordinary days, that you feel loved — truly, deeply loved — every single morning you wake up.</p>
+    <p class="closing-p">You are <em>my greatest blessing.</em> The person God gave me that I did not know I was waiting for. My home. My favourite. My everything.</p>
+    <p class="closing-p">I love you — not just today, but every ordinary Tuesday, every quiet evening, every moment I get to call you mine. Yesterday, today, and every day still to come.</p>
+    <div class="closing-divider">
+      <div class="closing-divider-line"></div>
+      <div>🌹</div>
+      <div class="closing-divider-line"></div>
+    </div>
+    <div class="closing-sign-from">Forever &amp; always yours,</div>
+    <div class="closing-role">Your Husband</div>
+    <div class="closing-signature">Nikhilesh</div>
+    <div class="hearts-row">💗 🌹 💗 🌹 💗</div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>·</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: linear-gradient(160deg, #1c0a0a, #2d0d0d 55%, #1a0505);
+      font-family: "Cormorant Garamond", serif;
+      color: #f5f0fa;
+    }
+    .gate {
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .gate-eyebrow {
+      font-family: Montserrat, sans-serif;
+      font-size: 9px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a96e;
+      margin-bottom: 1.25rem;
+      opacity: 0.85;
+    }
+    .gate h1 {
+      font-size: 1.65rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.45;
+      color: #e8a09a;
+      margin-bottom: 1.75rem;
+    }
+    .gate label {
+      display: block;
+      font-family: Montserrat, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #8b5e5e;
+      margin-bottom: 0.65rem;
+    }
+    .gate input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 169, 110, 0.25);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-family: Montserrat, sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-align: center;
+      outline: none;
+    }
+    .gate input:focus {
+      border-color: rgba(192, 57, 43, 0.55);
+      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+    }
+    .gate button {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #c0392b, #8b2a20);
+      color: #fff8f2;
+      font-family: Montserrat, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .gate button:hover { opacity: 0.92; }
+    .gate-error {
+      margin-top: 0.85rem;
+      font-size: 0.9rem;
+      color: #ff8a8a;
+      min-height: 1.25rem;
+    }
+    .gate-hint {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #8b5e5e;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="gate">
+    <p class="gate-eyebrow">Just for you</p>
+    <h1>Type your date of birth to see your surprise</h1>
+    <form id="gate-form">
+      <label for="dob">Date of birth</label>
+      <input
+        id="dob"
+        name="dob"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="DDMMYYYY"
+        maxlength="10"
+        required
+      />
+      <button type="submit">Open</button>
+      <p class="gate-error" id="gate-error" hidden>That doesn’t match. Try again, sweety.</p>
+    </form>
+    <p class="gate-hint">A little something waiting on the other side.</p>
+  </div>
+  <script>
+    const SECRET = "18062003";
+    const UNLOCK_KEY = "kj_bday_unlock";
+
+    if (sessionStorage.getItem(UNLOCK_KEY) === "1") {
+      location.replace("/sweety");
+    }
+
+    function normalizeDob(value) {
+      return String(value).replace(/\D/g, "");
+    }
+
+    document.getElementById("gate-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const err = document.getElementById("gate-error");
+      const raw = document.getElementById("dob").value;
+
+      if (normalizeDob(raw) === SECRET) {
+        sessionStorage.setItem(UNLOCK_KEY, "1");
+        location.href = "/sweety";
+        return;
+      }
+
+      err.hidden = false;
+      document.getElementById("dob").value = "";
+      document.getElementById("dob").focus();
+    });
+  </script>
+</body>
+</html>
